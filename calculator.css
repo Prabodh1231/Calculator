@@ -1,0 +1,46 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(131, 110, 71);
+}
+
+.box {
+    width: 500px;
+    height: 750px;
+    background-color: rgb(202, 28, 28);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.result {
+    background-color: aliceblue;
+    width: 450px;
+    height: 100px; 
+}
+
+.keys {
+    display: flex;
+    background-color: rgb(24, 212, 74);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 450px;
+    height: 625px;
+}
+
+.row01{
+    display: flex;
+    align-items: center;
+    width: 450px;
+    height: 130px;
+    justify-content: space-around;
+}
+
+button {
+    width: 100px;
+    height: 100px;
+}
