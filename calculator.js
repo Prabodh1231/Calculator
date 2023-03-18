@@ -14,16 +14,19 @@ let secondNumber = "";
 let functionButton ="";
 let display = document.querySelector(".result");
 let functionClicked = false;
-let numberKey02 = document.querySelectorAll(".number");
 let answer = document.querySelector(".answer");
+let decimal = document.getElementById("decimal");
+let decimalClicked = false;
+let clear = document.querySelector(".Clear");
 
+  
 
 numberKey.forEach((button) => {
     button.addEventListener("click", () => {
         if (display.textContent === "0") {
             display.textContent = "";
         }
-        let number = button.id;
+        let number = button.textContent;
         if (!functionClicked) {
             firstNumber += number;
             display.textContent = firstNumber;
@@ -34,11 +37,25 @@ numberKey.forEach((button) => {
     })
 })
 
+decimal.addEventListener("click", () => {
+    if (!decimalClicked) {
+        decimalClicked = true;
+        if (!functionClicked) {
+            firstNumber += ".";
+            display.textContent = firstNumber;
+        } else {
+            secondNumber += ".";
+            display.textContent = secondNumber;
+        }
+    }
+});
+
 
 functionKey.forEach((button) => {
     button.addEventListener("click", () => {
         functionButton = button.id;
         functionClicked = true;
+        decimalClicked = false;
     })
 })
 
@@ -65,4 +82,14 @@ answer.addEventListener("click", () => {
     secondNumber = "";
     functionButton = "";
     functionClicked = false;
+    decimalClicked = false;
+})
+
+clear.addEventListener("click", () => {
+    display.textContent = ""
+    firstNumber = "";
+    secondNumber = "";
+    functionButton = "";
+    functionClicked = false;
+    decimalClicked = false;
 })
