@@ -53,7 +53,7 @@ decimal.addEventListener("click", () => {
 
 functionKey.forEach((button) => {
     button.addEventListener("click", () => {
-        functionButton = button.id;
+        functionButton = button.textContent;
         functionClicked = true;
         decimalClicked = false;
     })

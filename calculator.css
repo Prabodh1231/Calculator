@@ -30,17 +30,14 @@ body {
     align-items: center;
     width: 450px;
     height: 625px;
-}
-
-.row01{
-    display: flex;
-    align-items: center;
-    width: 450px;
-    height: 130px;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 
 button {
     width: 100px;
     height: 100px;
+}
+
+#zero, .answer {
+    width: 205px;
 }
