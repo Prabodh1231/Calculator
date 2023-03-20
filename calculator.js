@@ -10,7 +10,9 @@ let allButtons = document.querySelectorAll("button");
 let numberKey = document.querySelectorAll(".number");
 let functionKey = keysBox.querySelectorAll(".function");
 let firstNumber = "";
+let getFirstNumber = false;
 let secondNumber = "";
+let getSecondNumber = false;
 let functionButton ="";
 let display = document.querySelector(".result");
 let functionClicked = false;
@@ -30,9 +32,11 @@ numberKey.forEach((button) => {
         if (!functionClicked) {
             firstNumber += number;
             display.textContent = firstNumber;
+            getFirstNumber = true;
         } else {
             secondNumber += number;
             display.textContent = secondNumber;
+            getSecondNumber = true;
         }
     })
 })
@@ -53,11 +57,24 @@ decimal.addEventListener("click", () => {
 
 functionKey.forEach((button) => {
     button.addEventListener("click", () => {
-        functionButton = button.textContent;
-        functionClicked = true;
-        decimalClicked = false;
+        if (!getSecondNumber) {
+            functionButton = button.textContent;
+            functionClicked = true;
+            decimalClicked = false;  
+        }
+        else {
+            let result = calculate(Number(firstNumber), Number(secondNumber), functionButton);
+            display.textContent = result;
+            functionClicked = true;
+            firstNumber = result;
+            functionButton = button.textContent;
+            secondNumber = "";
+            decimalClicked = false;
+            getFirstNumber = false;
+            getSecondNumber = false;
+            }
+        })
     })
-})
 
 
 function calculate(num1, num2, operator) {
@@ -76,6 +93,13 @@ function calculate(num1, num2, operator) {
 }
 
 answer.addEventListener("click", () => {
+    if (!getFirstNumber) {
+        return
+    }
+    else if (!getSecondNumber) {
+        return
+    }
+    else {
     let result = calculate(Number(firstNumber), Number(secondNumber), functionButton);
     display.textContent = result;
     firstNumber = "";
@@ -83,7 +107,11 @@ answer.addEventListener("click", () => {
     functionButton = "";
     functionClicked = false;
     decimalClicked = false;
+    getFirstNumber = false;
+    getSecondNumber = false;
+    }
 })
+
 
 clear.addEventListener("click", () => {
     display.textContent = ""
