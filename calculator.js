@@ -1,14 +1,5 @@
-let x = 2;
-let y = 3;
-let expression = "x + y"; // This is a string representing the expression "2 + 3"
-let result = eval(expression); // This will evaluate the expression and return the result, which is 5
-console.log(expression)
-
-let calculator = document.querySelector(".box");
-let keysBox = calculator.querySelector(".keys");
-let allButtons = document.querySelectorAll("button");
 let numberKey = document.querySelectorAll(".number");
-let functionKey = keysBox.querySelectorAll(".function");
+let functionKey = document.querySelectorAll(".function");
 let firstNumber = "";
 let getFirstNumber = false;
 let secondNumber = "";
@@ -20,6 +11,10 @@ let answer = document.querySelector(".answer");
 let decimal = document.getElementById("decimal");
 let decimalClicked = false;
 let clear = document.querySelector(".Clear");
+let previousValue = "";
+let backspace = document.querySelector(".Undo");
+let resultClick = false;
+
 
   
 
@@ -29,6 +24,7 @@ numberKey.forEach((button) => {
             display.textContent = "";
         }
         let number = button.textContent;
+        previousValue = display.textContent;
         if (!functionClicked) {
             firstNumber += number;
             display.textContent = firstNumber;
@@ -39,7 +35,7 @@ numberKey.forEach((button) => {
             getSecondNumber = true;
         }
     })
-})
+})    
 
 decimal.addEventListener("click", () => {
     if (!decimalClicked) {
@@ -57,24 +53,71 @@ decimal.addEventListener("click", () => {
 
 functionKey.forEach((button) => {
     button.addEventListener("click", () => {
-        if (!getSecondNumber) {
+        if (resultClick && !getSecondNumber) {
+            firstNumber = display.textContent;
+            functionButton = button.textContent;
+            secondNumber = "";
+            previousValue = "";
+            functionClicked = true;
+            resultClick = false;
+            decimalClicked = false;
+            getFirstNumber = true;
+            getSecondNumber = false;
+        }
+        else if (!getSecondNumber) {
             functionButton = button.textContent;
             functionClicked = true;
-            decimalClicked = false;  
-        }
+            decimalClicked = false; 
+        }       
         else {
             let result = calculate(Number(firstNumber), Number(secondNumber), functionButton);
+            previousValue = result;
             display.textContent = result;
             functionClicked = true;
             firstNumber = result;
             functionButton = button.textContent;
             secondNumber = "";
+            previousValue = "";
             decimalClicked = false;
             getFirstNumber = false;
             getSecondNumber = false;
-            }
-        })
-    })
+        }
+    }) 
+})
+
+backspace.addEventListener("click", () => {
+    let currentValue = display.textContent;
+    let newValue = currentValue.slice(0, -1);
+    display.textContent = newValue;
+    if (!functionClicked && getFirstNumber && !decimalClicked) {
+        firstNumber = newValue;
+    } 
+
+    else if (!functionClicked && getFirstNumber && decimalClicked) {
+        let splitFirstNumber = firstNumber.split('');
+        if (!splitFirstNumber.includes('.')) {
+            firstNumber = newValue;
+        }
+        else {
+            firstNumber = newValue;
+            decimalClicked = false;
+        }    
+    }
+
+    else if (functionClicked && getSecondNumber && !decimalClicked) {
+        secondNumber = newValue;
+    }
+    else if (functionClicked && getSecondNumber && decimalClicked) {
+        let splitFirstNumber = secondNumber.split('');
+        if (!splitFirstNumber.includes('.')) {
+            secondNumber = newValue;
+        }
+        else {
+            secondNumber = newValue;
+            decimalClicked = false;
+        }
+    }
+})
 
 
 function calculate(num1, num2, operator) {
@@ -101,10 +144,12 @@ answer.addEventListener("click", () => {
     }
     else {
     let result = calculate(Number(firstNumber), Number(secondNumber), functionButton);
-    display.textContent = result;
+    display.textContent = Math.round(result * 10) / 10;
     firstNumber = "";
     secondNumber = "";
     functionButton = "";
+    previousValue = "";
+    resultClick = true;
     functionClicked = false;
     decimalClicked = false;
     getFirstNumber = false;
@@ -120,4 +165,7 @@ clear.addEventListener("click", () => {
     functionButton = "";
     functionClicked = false;
     decimalClicked = false;
+    getFirstNumber = false;
+    getSecondNumber = false;
+    resultClick = false;
 })
